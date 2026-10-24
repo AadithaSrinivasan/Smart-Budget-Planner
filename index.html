@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7f1e6">
+    <meta name="description" content="Smart Budget Planner for Indian households, individuals and senior citizens.">
+    <title>Smart Budget Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="#" aria-label="Smart Budget Planner home">
+            <span class="brand-mark">₹</span>
+            <span>
+                <strong>Smart Budget Planner</strong>
+                <small>Your money. Your family. Your future.</small>
+            </span>
+        </a>
+        <div class="top-actions">
+            <label class="visually-hidden" for="languageSelect">Language</label>
+            <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="hi">हिन्दी</option>
+                <option value="kn">ಕನ್ನಡ</option>
+                <option value="ta">தமிழ்</option>
+                <option value="te">తెలుగు</option>
+                <option value="ml">മലയാളം</option>
+                <option value="mr">मराठी</option>
+            </select>
+            <button id="logoutButton" class="button button-light hidden" type="button">Log out</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="welcomeSection" class="hero">
+            <div class="hero-copy">
+                <span class="eyebrow">A little planning goes a long way</span>
+                <h1>Make every rupee work for <span>your future.</span></h1>
+                <p>Plan household expenses, prepare for unexpected costs, build savings and make money decisions with confidence.</p>
+                <div class="hero-points">
+                    <span>✓ Your own categories</span>
+                    <span>✓ Goals that fit your life</span>
+                    <span>✓ Made for Indian budgets</span>
+                </div>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+                <div class="hero-sun"></div>
+                <div class="hero-card">
+                    <span class="art-label">A brighter financial future</span>
+                    <span class="art-rupee">₹</span>
+                    <span class="art-leaves">🌿</span>
+                    <span class="art-note">Plan · Save · Grow</span>
+                </div>
+                <span class="floating-coin coin-a">₹</span>
+                <span class="floating-coin coin-b">₹</span>
+            </div>
+        </section>
+
+        <section id="authSection" class="auth-layout">
+            <div class="auth-intro">
+                <span class="eyebrow">Your personal finance space</span>
+                <h2>Budgeting should work for your life.</h2>
+                <p>Choose a family, individual or senior-citizen profile. Set up your own income sources, spending categories, savings goals and reminders.</p>
+                <div class="intro-feature"><span>01</span><div><strong>Understand your money</strong><p>See what comes in and what goes out.</p></div></div>
+                <div class="intro-feature"><span>02</span><div><strong>Prepare for tomorrow</strong><p>Plan for bills, emergencies and important goals.</p></div></div>
+                <div class="intro-feature"><span>03</span><div><strong>Stay in control</strong><p>Use estimates and what-if scenarios before spending.</p></div></div>
+            </div>
+
+            <div class="auth-card">
+                <div class="tabs" role="tablist" aria-label="Account options">
+                    <button id="registerTab" class="tab active" type="button" role="tab" aria-selected="true">Create profile</button>
+                    <button id="loginTab" class="tab" type="button" role="tab" aria-selected="false">Symbol login</button>
+                </div>
+
+                <div id="registerPanel">
+                    <h2>Create your budget profile</h2>
+                    <p class="muted">Start with the details you know. You can customise your budget later.</p>
+                    <form id="registerForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="profileName">Your name</label>
+                                <input type="text" id="profileName" name="profileName" autocomplete="name" required maxlength="80" placeholder="Enter your name">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileType">Your lifestyle</label>
+                                <select id="profileType" name="profileType" required>
+                                    <option value="family">Family / Household</option>
+                                    <option value="bachelor">Bachelor / Spinster</option>
+                                    <option value="senior">Senior citizen</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="monthlyIncome">Expected monthly income (₹)</label>
+                                <input id="monthlyIncome" type="number" min="0" step="0.01" value="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="householdSize">Household members</label>
+                                <input id="householdSize" type="number" min="1" max="100" value="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="salaryDay">Usual income day</label>
+                                <input id="salaryDay" type="number" min="1" max="31" value="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profileLanguage">Preferred language</label>
+                                <select id="profileLanguage">
+                                    <option value="en">English</option>
+                                    <option value="hi">हिन्दी</option>
+                                    <option value="kn">ಕನ್ನಡ</option>
+                                    <option value="ta">தமிழ்</option>
+                                    <option value="te">తెలుగు</option>
+                                    <option value="ml">മലയാളം</option>
+                                    <option value="mr">मराठी</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="financialPriorities">Your main priorities</label>
+                            <textarea id="financialPriorities" rows="2" placeholder="Education, groceries, rent, retirement, emergency fund..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="startingBalance">Existing available balance (₹)</label>
+                            <input id="startingBalance" type="number" min="0" step="0.01" value="0">
+                            <small>Money already available before you start recording transactions.</small>
+                        </div>
+
+                        <label class="check-row">
+                            <input id="headConsent" name="headConsent" type="checkbox">
+                            <span>I am the family head / account owner.</span>
+                        </label>
+
+                        <div class="form-group">
+                            <label for="familyPasskey">Create a shared family passkey</label>
+                            <input id="familyPasskey" type="password" minlength="4" autocomplete="new-password" required placeholder="At least 4 characters">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPasskey">Confirm passkey</label>
+                            <input id="confirmPasskey" type="password" minlength="4" autocomplete="new-password" required placeholder="Enter it again">
+                        </div>
+
+                        <div class="form-group">
+                            <span class="field-label">Choose five different symbols in your preferred order</span>
+                            <p class="help-text">Select five symbols from the grid. Their order will be part of your login pattern.</p>
+                            <div id="registerSymbolGrid" class="symbol-grid" role="group" aria-label="Registration symbol selection"></div>
+                            <p id="registerSymbolStatus" class="selection-status" aria-live="polite">0 of 5 symbols selected.</p>
+                        </div>
+
+                        <button class="button button-primary button-full" type="submit">Create my budget</button>
+                    </form>
+                </div>
+
+                <div id="loginPanel" class="hidden">
+                    <h2>Welcome back</h2>
+                    <p class="muted">Enter your profile name, passkey and five-symbol pattern.</p>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginName">Profile name</label>
+                            <input type="text" id="loginName" autocomplete="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPasskey">Shared passkey</label>
+                            <input id="loginPasskey" type="password" autocomplete="current-password" required>
+                        </div>
+                        <div class="form-group">
+                            <span class="field-label">Select your five symbols in order</span>
+                            <div id="loginSymbolGrid" class="symbol-grid" role="group" aria-label="Login symbol selection"></div>
+                            <p id="loginSymbolStatus" class="selection-status" aria-live="polite">0 of 5 symbols selected.</p>
+                        </div>
+                        <button class="button button-primary button-full" type="submit">Log in</button>
+                    </form>
+                </div>
+                <p id="authMessage" class="message" role="status" aria-live="polite"></p>
+                <p class="security-note">Prototype notice: this version stores data in this browser. Do not use a real bank password or sensitive financial credentials.</p>
+            </div>
+        </section>
+
+        <section id="dashboardSection" class="hidden">
+            <div class="dashboard-heading">
+                <div>
+                    <span class="eyebrow">Your financial home</span>
+                    <h1>Hello, <span id="dashboardUserName">there</span>!</h1>
+                    <p id="dashboardProfileDescription" class="muted">Your budget, your way.</p>
+                </div>
+                <div class="month-control">
+                    <label for="budgetMonth">Budget month</label>
+                    <input id="budgetMonth" type="month">
+                </div>
+            </div>
+
+            <div class="quick-summary" aria-label="Budget summary">
+                <article class="summary-card summary-income"><span>Income</span><strong id="totalIncomeValue">₹0</strong><small>This month's recorded income</small></article>
+                <article class="summary-card summary-expense"><span>Expenses</span><strong id="totalExpensesValue">₹0</strong><small>This month's recorded expenses</small></article>
+                <article class="summary-card summary-balance"><span>Available balance</span><strong id="availableBalanceValue">₹0</strong><small>Opening balance + income − expenses</small></article>
+                <article class="summary-card summary-prediction"><span>Month-end estimate</span><strong id="predictedBalanceValue">₹0</strong><small id="predictionNote">Estimate based on recorded spending</small></article>
+            </div>
+
+            <nav class="dashboard-nav" aria-label="Budget tools">
+                <button type="button" class="nav-button active" data-target="overviewPanel">Overview</button>
+                <button type="button" class="nav-button" data-target="incomePanel">Income</button>
+                <button type="button" class="nav-button" data-target="expensesPanel">Expenses</button>
+                <button type="button" class="nav-button" data-target="savingsPanel">Savings & commitments</button>
+                <button type="button" class="nav-button" data-target="salaryPanel">Salary-day planner</button>
+                <button type="button" class="nav-button" data-target="debtPanel">Debt planner</button>
+                <button type="button" class="nav-button" data-target="whatIfPanel">What-if simulator</button>
+                <button type="button" class="nav-button" data-target="challengePanel">No-spend challenge</button>
+                <button type="button" class="nav-button" data-target="schemesPanel">Government schemes</button>
+                <button type="button" class="nav-button" data-target="schedulePanel">My schedule</button>
+            </nav>
+
+            <section id="overviewPanel" class="dashboard-panel">
+                <div class="section-title">
+                    <div><span class="eyebrow">The big picture</span><h2>Budget overview</h2></div>
+                    <button id="refreshDashboardButton" type="button" class="button button-light">Refresh summary</button>
+                </div>
+
+                <div class="two-column">
+                    <article class="panel">
+                        <h3>Income vs expenses</h3>
+                        <p class="muted">Compare money coming in with money going out.</p>
+                        <div class="chart-container"><canvas id="incomeExpenseChart" aria-label="Income and expense chart"></canvas></div>
+                    </article>
+                    <article class="panel">
+                        <h3>Where your money goes</h3>
+                        <p class="muted">Expense breakdown by your own categories.</p>
+                        <div class="chart-container"><canvas id="expenseBreakdownChart" aria-label="Expense category chart"></canvas></div>
+                    </article>
+                </div>
+
+                <article class="panel">
+                    <h3>Recent transactions</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Date</th><th>Type</th><th>Category</th><th>Description</th><th>Amount</th></tr></thead>
+                            <tbody id="recentTransactionsBody"><tr><td colspan="5">No transactions yet.</td></tr></tbody>
+                        </table>
+                    </div>
+                </article>
+                <article class="panel">
+                    <h3>Suggestions for your budget</h3>
+                    <div id="budgetSuggestions" class="suggestion-list"><p>Add transactions to receive suggestions.</p></div>
+                </article>
+            </section>
+
+            <section id="incomePanel" class="dashboard-panel hidden">
+                <div class="section-title"><div><span class="eyebrow">Money coming in</span><h2>Manage income</h2></div></div>
+                <article class="panel">
+                    <form id="incomeForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="incomeCategory">Category</label><input type="text" id="incomeCategory" list="incomeCategoryOptions" required placeholder="Salary, pension, freelance..."><datalist id="incomeCategoryOptions"><option value="Salary"><option value="Pension"><option value="Freelance"><option value="Business"><option value="Interest"><option value="Other"></datalist></div>
+                            <div class="form-group"><label for="incomeAmount">Amount (₹)</label><input id="incomeAmount" type="number" min="0.01" step="0.01" required></div>
+                            <div class="form-group"><label for="incomeDate">Date received</label><input id="incomeDate" type="date" required></div>
+                            <div class="form-group"><label for="incomeDescription">Description</label><input type="text" id="incomeDescription" placeholder="Optional notes"></div>
+                        </div>
+                        <button class="button button-primary" type="submit">Add income</button>
+                    </form>
+                </article>
+                <article class="panel"><h3>Income records</h3><div class="table-wrap"><table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Action</th></tr></thead><tbody id="incomeTableBody"><tr><td colspan="5">No income entries yet.</td></tr></tbody></table></div></article>
+            </section>
+
+            <section id="expensesPanel" class="dashboard-panel hidden">
+                <div class="section-title"><div><span class="eyebrow">Money going out</span><h2>Track expenses</h2></div></div>
+                <article class="panel">
+                    <form id="expenseForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="expenseCategory">Your category</label><input type="text" id="expenseCategory" list="expenseCategoryOptions" required placeholder="Groceries, rent, travel..."><datalist id="expenseCategoryOptions"><option value="Groceries"><option value="Rent"><option value="Utilities"><option value="Education"><option value="Healthcare"><option value="Transport"><option value="Family"><option value="Entertainment"><option value="Other"></datalist></div>
+                            <div class="form-group"><label for="expenseAmount">Amount (₹)</label><input id="expenseAmount" type="number" min="0.01" step="0.01" required></div>
+                            <div class="form-group"><label for="expenseDate">Date paid</label><input id="expenseDate" type="date" required></div>
+                            <div class="form-group"><label for="expenseDescription">Description</label><input type="text" id="expenseDescription" placeholder="Optional notes"></div>
+                            <div class="form-group"><label for="expenseNecessity">Expense type</label><select id="expenseNecessity"><option value="essential">Essential</option><option value="optional">Optional</option><option value="emergency">Emergency</option></select></div>
+                        </div>
+                        <button class="button button-primary" type="submit">Add expense</button>
+                    </form>
+                </article>
+                <article class="panel"><h3>Expense records</h3><div class="table-wrap"><table><thead><tr><th>Date</th><th>Category</th><th>Type</th><th>Description</th><th>Amount</th><th>Action</th></tr></thead><tbody id="expenseTableBody"><tr><td colspan="6">No expenses yet.</td></tr></tbody></table></div></article>
+            </section>
+
+            <section id="savingsPanel" class="dashboard-panel hidden">
+                <div class="section-title"><div><span class="eyebrow">Plan for what matters</span><h2>Savings goals & commitments</h2></div></div>
+                <article class="panel">
+                    <p class="muted">Plan for emergencies, education, festivals, holidays, subscriptions, insurance and other deadlines that matter to you.</p>
+                    <form id="savingsForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="savingsGoalName">Goal or commitment</label><input type="text" id="savingsGoalName" required placeholder="Emergency fund, gym fee..."></div>
+                            <div class="form-group"><label for="savingsTarget">Target amount (₹)</label><input id="savingsTarget" type="number" min="0.01" step="0.01" required></div>
+                            <div class="form-group"><label for="savingsCurrent">Already saved (₹)</label><input id="savingsCurrent" type="number" min="0" step="0.01" value="0" required></div>
+                            <div class="form-group"><label for="savingsDeadline">Deadline</label><input id="savingsDeadline" type="date" required></div>
+                            <div class="form-group"><label for="savingsPriority">Priority</label><select id="savingsPriority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></div>
+                        </div>
+                        <button class="button button-primary" type="submit">Add goal</button>
+                    </form>
+                </article>
+                <div id="savingsGoalsList" class="goal-list"><p>Your goals will appear here.</p></div>
+            </section>
+
+            <section id="salaryPanel" class="dashboard-panel hidden">
+                <div class="section-title"><div><span class="eyebrow">Give every rupee a purpose</span><h2>Salary-day planner</h2></div></div>
+                <article class="panel">
+                    <p class="muted">Choose your own allocations. The planner will show whether the amounts exceed your take-home income.</p>
+                    <form id="salaryPlannerForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="salaryTakeHome">Take-home income (₹)</label><input id="salaryTakeHome" type="number" min="0" step="0.01" required></div>
+                            <div class="form-group"><label for="salaryNeeds">Needs (₹)</label><input id="salaryNeeds" type="number" min="0" step="0.01" value="0" required></div>
+                            <div class="form-group"><label for="salarySavings">Savings (₹)</label><input id="salarySavings" type="number" min="0" step="0.01" value="0" required></div>
+                            <div class="form-group"><label for="salaryDebt">Debt payments (₹)</label><input id="salaryDebt" type="number" min="0" step="0.01" value="0" required></div>
+                            <div class="form-group"><label for="salaryWants">Wants (₹)</label><input id="salaryWants" type="number" min="0" step="0.01" value="0" required></div>
+                            <div class="form-group"><label for="salaryOther">Other (₹)</label><input id="salaryOther" type="number" min="0" step="0.01" value="0" required></div>
+                        </div>
+                        <button class="button button-primary" type="submit">Calculate allocation</button>
+                    </form>
+                    <div id="salaryPlannerResult" class="result-panel" aria-live="polite">Enter your amounts to see your allocation.</div>
+                    <div class="chart-container"><canvas id="salaryAllocationChart" aria-label="Salary allocation pie chart"></canvas></div>
+                </article>
+            </section>
+
+            <section id="debtPanel" class="dashboard-panel hidden">
+                <div class="section-title"><div><span class="eyebrow">Take control step by step</span><h2>Debt payoff planner</h2></div></div>
+                <article class="panel">
+                    <p class="muted">Record loans and credit cards, compare interest rates and estimate payoff time. Actual lender calculations may differ.</p>
+                    <form id="debtForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="debtName">Debt name</label><input type="text" id="debtName" required placeholder="Credit card, personal loan..."></div>
+                            <div class="form-group"><label for="debtBalance">Outstanding balance (₹)</label><input id="debtBalance" type="number" min="0.01" step="0.01" required></div>
+                            <div class="form-group"><label for="debtInterest">Annual interest rate (%)</label><input id="debtInterest" type="number" min="0" max="1000" step="0.01" required></div>
+                            <div class="form-group"><label for="debtMinimum">Minimum monthly payment (₹)</label><input id="debtMinimum" type="number" min="0.01" step="0.01" required></div>
+                            <div class="form-group"><label for="debtExtra">Extra monthly payment (₹)</label><input id="debtExtra" type="number" min="0" step="0.01" value="0" required></div>
+                        </div>
+                        <button class="button button-primary" type="submit">Add debt</button>
+                    </form>
+                </article>
+                <div id="debtPlannerResult" class="result-panel" aria-live="polite">Add a debt to estimate repayment.</div>
+                <div id="debtList" class="goal-list"><p>No debts added yet.</p></div>
+            </section>
+
+            <section id="whatIfPanel" class="dashboard-panel hidden">
+                <div class="section-title"><div><span class="eyebrow">Pause and plan before spending</span><h2>What-if simulator</h2></div></div>
+                <article class="panel">
+                    <p>Try an unexpected cost, such as a ₹1,000 party expense, and see how it may affect your balance.</p>
+                    <form id="whatIfForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="whatIfName">Unexpected expense</label><input type="text" id="whatIfName" value="Unexpected party" required></div>
+                            <div class="form-group"><label for="whatIfAmount">Amount (₹)</label><input id="whatIfAmount" type="number" min="0" step="0.01" value="1000" required></div>
+                            <div class="form-group"><label for="whatIfBudget">Available balance (₹)</label><input id="whatIfBudget" type="number" min="0" step="0.01" value="0" required></div>
+                        </div>
+                        <button class="button button-primary" type="submit">Simulate expense</button>
+                    </form>
+                    <div id="whatIfResult" class="result-panel" aria-live="polite">Enter your figures to see the impact.</div>
+                    <div class="tip-box"><strong>Possible solutions</strong><ul><li>Reduce the cost or choose a lower-cost alternative.</li><li>Review non-essential spending before changing essential bills.</li><li>Use an emergency fund only when appropriate.</li><li>Avoid high-interest borrowing without a repayment plan.</li></ul></div>
+                </article>
+            </section>
+
+            <section id="challengePanel" class="dashboard-panel hidden">
+                <div class="section-title"><div><span class="eyebrow">Small steps add up</span><h2>No-spend challenge</h2></div></div>
+                <article class="panel">
+                    <p>Choose a realistic period to reduce non-essential spending. Continue to pay for essential needs and commitments.</p>
+                    <form id="challengeForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="challengeDays">Challenge length (days)</label><input id="challengeDays" type="number" min="1" max="365" value="7" required></div>
+                            <div class="form-group"><label for="challengeDailyTarget">Daily optional-spending limit (₹)</label><input id="challengeDailyTarget" type="number" min="0" step="0.01" value="0"></div>
+                            <div class="form-group"><label for="challengeReward">Your reward</label><input type="text" id="challengeReward" required placeholder="Home movie night, picnic..."></div>
+                        </div>
+                        <button class="button button-primary" type="submit">Start challenge</button>
+                    </form>
+                    <div id="challengeResult" class="result-panel" aria-live="polite">Your progress will appear here.</div>
+                    <button id="challengeProgressButton" type="button" class="button button-light">Record a successful day</button>
+                </article>
+            </section>
+
+            <section id="schemesPanel" class="dashboard-panel hidden">
+                <div class="section-title"><div><span class="eyebrow">Research official information</span><h2>Government schemes & resources</h2></div></div>
+                <article class="panel">
+                    <p class="muted">Use official sources to check current eligibility, benefits, interest rates, deadlines and application procedures. Availability and rules may change.</p>
+                    <div class="scheme-grid">
+                        <article class="scheme-card"><span class="scheme-icon">🏦</span><h3>Jan Dhan Yojana</h3><p>Information on financial inclusion and basic banking access.</p><a href="https://pmjdy.gov.in/" target="_blank" rel="noopener noreferrer">Official PMJDY website ↗</a></article>
+                        <article class="scheme-card"><span class="scheme-icon">🌱</span><h3>Public Provident Fund</h3><p>Explore long-term savings information and applicable rules.</p><a href="https://www.indiapost.gov.in/" target="_blank" rel="noopener noreferrer">Official India Post website ↗</a></article>
+                        <article class="scheme-card"><span class="scheme-icon">🧓</span><h3>National Pension System</h3><p>Research retirement planning and pension system details.</p><a href="https://www.pfrda.org.in/" target="_blank" rel="noopener noreferrer">Official PFRDA website ↗</a></article>
+                        <article class="scheme-card"><span class="scheme-icon">📋</span><h3>MyScheme</h3><p>Search government schemes and their published eligibility criteria.</p><a href="https://www.myscheme.gov.in/" target="_blank" rel="noopener noreferrer">Official MyScheme website ↗</a></article>
+                        <article class="scheme-card"><span class="scheme-icon">🏛️</span><h3>Government services</h3><p>Explore central and state public services.</p><a href="https://services.india.gov.in/" target="_blank" rel="noopener noreferrer">National Services Portal ↗</a></article>
+                        <article class="scheme-card"><span class="scheme-icon">🤝</span><h3>Social justice resources</h3><p>Research official welfare and senior-citizen resources.</p><a href="https://socialjustice.gov.in/" target="_blank" rel="noopener noreferrer">Official ministry website ↗</a></article>
+                    </div>
+                </article>
+            </section>
+
+            <section id="schedulePanel" class="dashboard-panel hidden">
+                <div class="section-title"><div><span class="eyebrow">Make a routine that fits your life</span><h2>My budget schedule</h2></div></div>
+                <article class="panel">
+                    <form id="scheduleForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label for="scheduleTitle">Task or reminder</label><input type="text" id="scheduleTitle" required placeholder="Pay electricity bill, transfer savings..."></div>
+                            <div class="form-group"><label for="scheduleDate">Due date</label><input id="scheduleDate" type="date" required></div>
+                            <div class="form-group"><label for="scheduleCategory">Category</label><input type="text" id="scheduleCategory" required placeholder="Bills, savings, family..."></div>
+                            <div class="form-group"><label for="scheduleAmount">Expected amount (₹)</label><input id="scheduleAmount" type="number" min="0" step="0.01" value="0"></div>
+                        </div>
+                        <button class="button button-primary" type="submit">Add reminder</button>
+                    </form>
+                </article>
+                <div id="scheduleList" class="goal-list"><p>Your reminders will appear here.</p></div>
+            </section>
+
+            <section class="panel data-panel">
+                <div><h2>Manage your data</h2><p class="muted">Export a JSON backup or clear the local prototype data from this browser.</p></div>
+                <div class="data-actions">
+                    <button id="exportDataButton" type="button" class="button button-light">Export backup</button>
+                    <button id="clearDataButton" type="button" class="button button-danger">Clear local data</button>
+                </div>
+                <p id="dataManagementMessage" class="message" role="status" aria-live="polite"></p>
+            </section>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Smart Budget Planner · Thoughtful planning for everyday life.</p>
+        <p>For budgeting education only. Verify financial and government scheme details with official sources.</p>
+    </footer>
+</body>
+</html>
